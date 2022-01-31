@@ -1,0 +1,32 @@
+version: '3.4'
+services:
+  pgc.charge.api:
+    image: ${DOCKER_REGISTRY-}pgcchargeapi
+    build:
+      context: .
+      dockerfile: Web Charge/Examples.Charge.API/Dockerfile
+    depends_on:
+      - db
+    #networks:
+    #  - pg
+
+  person.app:
+   image: app-person
+   build:
+     context: .
+     dockerfile: Web Charge/Exemple.Charge.Presentation/personPhoneApp/Dockerfile
+   depends_on:
+     - pgc.charge.api
+   ports:
+     - 80:80 
+  #  networks:
+  #    - pg
+
+  db:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      SA_PASSWORD: "Master@123"
+      ACCEPT_EULA: "Y"
+#networks:
+#   pg:
+#     driver: bridge    
